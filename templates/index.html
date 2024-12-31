@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Attendance Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .attendance-table th, .attendance-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .attendance-table th {
+            background-color: #f5f5f5;
+        }
+        .present {
+            color: green;
+        }
+        .absent {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>School Attendance Tracker</h1>
+    
+    <div class="form-container">
+        <h2>Mark Attendance</h2>
+        <form action="{{ url_for('mark_attendance') }}" method="POST">
+            <p>
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+            </p>
+            <p>
+                <label for="status">Status:</label>
+                <select id="status" name="status" required>
+                    <option value="present">Present</option>
+                    <option value="absent">Absent</option>
+                </select>
+            </p>
+            <p>
+                <label for="notes">Notes:</label>
+                <textarea id="notes" name="notes" rows="3"></textarea>
+            </p>
+            <button type="submit">Save Attendance</button>
+        </form>
+    </div>
+
+    <h2>Attendance History</h2>
+    <table class="attendance-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in attendance_records %}
+            <tr>
+                <td>{{ record[1] }}</td>
+                <td class="{{ record[2] }}">{{ record[2].title() }}</td>
+                <td>{{ record[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // Set max date to today when the page loads
+        window.onload = function() {
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('date');
+            dateInput.setAttribute('max', today);
+            dateInput.value = today;
+        }
+    </script>
+</body>
+</html>
