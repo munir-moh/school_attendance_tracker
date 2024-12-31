@@ -31,8 +31,8 @@ init_db()
 
 @app.route('/')
 def index():
-    if 'username' not in session:
-        return redirect(url_for('login'))
+    # if 'username' not in session:
+    #     return redirect(url_for('login'))
     conn = sqlite3.connect('attendance.db')
     c = conn.cursor()
     
